@@ -7,13 +7,19 @@ var megaRoster = {
   },
 
   setupEventListeners: function(){
-    document.querySelector('form').onsubmit = this.addStudent;
+    document.querySelector('#studentForm').onsubmit = this.addStudent;
 
+  },
+
+  buildListItem: function(studentName){
+    var item = document.createElement('li');
+    item.innerText = studentName;
+    return li;
   },
 
   addStudent: function(ev){
     ev.preventDefault();
-    consol.log("gdsafdsfa");
+    //var
 
   },
 
