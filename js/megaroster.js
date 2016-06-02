@@ -29,8 +29,8 @@ var megaroster = {
    ev.preventDefault();
    var details = document.querySelector('.details');
    var name = this.name.value;
-   details.appendChild(megaroster.buildList(name));
- }
+   details.insertBefore(megaroster.buildList(name), details.childNodes[0]);
+}
 };
 
 megaroster.init();
