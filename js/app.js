@@ -22,8 +22,9 @@ var megaRoster = {
     var studentName = form.studentName.value;
     var item = this.buildListItem(studentName);
     var list = document.querySelector('#studentList');
-    list.appendChild(item);
-
+    list.insertBefore(item, list.childNodes[0]);
+    form.reset();
+    form.studentName.focus();
 
   },
 
