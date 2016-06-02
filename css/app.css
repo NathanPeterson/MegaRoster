@@ -1,3 +1,9 @@
+#studentForm > div {
+    margin: 0;
+    padding: 0;
+}
+
+
 section > div {
   width: 80%;
   margin: 20px auto;
