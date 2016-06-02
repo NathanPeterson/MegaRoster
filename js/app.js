@@ -22,9 +22,15 @@ var megaRoster = {
       }
     });
 
-
+    var promoteLink = this.buildLink({
+      text: 'Promote',
+      handler: function(ev){
+        item.style.border = '2px blue dashed';
+      }
+    });
     item.innerText = studentName;
     item.appendChild(deleteLink);
+    item.appendChild(promoteLink);
     return item;
   },
 
