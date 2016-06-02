@@ -5,6 +5,8 @@
 
 #studentList a{
   margin-left: 20px;
+  border: 3px;
+  border-color: red;
 }
 
 section > div {
