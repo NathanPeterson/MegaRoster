@@ -3,6 +3,9 @@
     padding: 0;
 }
 
+#studentList a{
+  margin-left: 20px;
+}
 
 section > div {
   width: 80%;

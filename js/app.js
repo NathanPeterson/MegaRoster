@@ -12,8 +12,28 @@ var megaRoster = {
 
   buildListItem: function(studentName){
     var item = document.createElement('li');
+
+    var deleteLink = this.buildLink({
+      text: 'remove',
+      handler: function(ev){
+        var list = item.parentElement;
+        list.removeChild(item);
+        //confirm('Are you sure You want to Remove this name?')
+      }
+    });
+
+
     item.innerText = studentName;
+    item.appendChild(deleteLink);
     return item;
+  },
+
+  buildLink: function(options){
+      var link = document.createElement('a');
+      link.href = "#";
+      link.innerText = options.text;
+      link.onclick = options.handler;
+      return link;
   },
 
   addStudent: function(ev){
@@ -25,7 +45,6 @@ var megaRoster = {
     list.insertBefore(item, list.childNodes[0]);
     form.reset();
     form.studentName.focus();
-
   },
 
 
