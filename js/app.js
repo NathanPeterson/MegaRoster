@@ -36,6 +36,16 @@ var megaRoster = {
     this.prependChild(this.rosterElement, item);
   },
 
+  moveUp: function(item) {
+    var previousElement = item.previousElementSibling;
+    this.rosterElement.insertBefore(item, previousElement);
+  },
+
+  moveDown: function(item) {
+    this.moveUp(item.nextElementSibling);
+  },
+
+
   appendLinks: function(item) {
     var deleteLink = this.buildLink({
       text: 'remove',
@@ -53,7 +63,22 @@ var megaRoster = {
 
     item.appendChild(deleteLink);
     item.appendChild(promoteLink);
+
+    item.appendChild(this.buildLink({
+        text: 'up',
+        handler: function() {
+          this.moveUp(item);
+        }
+      }));
+
+      item.appendChild(this.buildLink({
+        text: 'down',
+        handler: function() {
+          this.moveDown(item);
+        }
+    }));
   },
+
 
   buildLink: function(options) {
     var link = document.createElement('a');
