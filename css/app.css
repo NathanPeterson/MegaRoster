@@ -9,6 +9,22 @@
   border-color: red;
 }
 
+span.action{
+  display: inline-block;
+  float: right;
+}
+
+span.studentName{
+  display: inline-block;
+  width: 15em;
+  padding: 3px;
+}
+
+span[contenteditable = true]{
+  border: 3px solid #999;
+  padding: 0px;
+}
+
 section > div {
   width: 80%;
   margin: 20px auto;

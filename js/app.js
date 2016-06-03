@@ -26,7 +26,10 @@ var megaRoster = {
 
   buildListItem: function(studentName) {
     var item = document.createElement('li');
-    item.innerText = studentName;
+    var span = document.createElement('span');
+    span.innerText = studentName;
+    span.className = 'studentName';
+    item.appendChild(span);
     this.appendLinks(item);
 
     return item;
@@ -45,15 +48,22 @@ var megaRoster = {
     this.moveUp(item.nextElementSibling);
   },
 
-  isFirstItem: function(item) {
-    return (this.rosterElement.firstChild === item);
-  },
-
-  isLastItem: function(item) {
-    return (this.rosterElement.lastChild === item);
+  toggleEditable: function(el) {
+    var toggleElement = el.parentElement.querySelector('.toggleEdit');
+    if (el.contentEditable === "true") {
+        el.contentEditable = "false";
+        toggleElement.innerHTML = "edit";
+    } else {
+        el.contentEditable = "true";
+        toggleElement.innerHTML = "update";
+        el.focus();
+    }
   },
 
   appendLinks: function(item) {
+    var span = document.createElement('span');
+    span.className = 'actions';
+
     var deleteLink = this.buildLink({
       text: 'remove',
       handler: function(ev) {
@@ -68,10 +78,10 @@ var megaRoster = {
       }
     });
 
-    item.appendChild(deleteLink);
-    item.appendChild(promoteLink);
+    span.appendChild(deleteLink);
+    span.appendChild(promoteLink);
 
-    item.appendChild(this.buildLink({
+    span.appendChild(this.buildLink({
       text: 'up',
       className: 'up',
       handler: function() {
@@ -81,7 +91,7 @@ var megaRoster = {
       }
     }));
 
-    item.appendChild(this.buildLink({
+    span.appendChild(this.buildLink({
       text: 'down',
       className: 'down',
       handler: function() {
@@ -90,6 +100,16 @@ var megaRoster = {
         }
       }
     }));
+
+    span.appendChild(this.buildLink({
+      text: 'edit',
+      className: 'toggleEdit',
+      handler: function() {
+        this.toggleEditable(item.querySelector('span.studentName'));
+      }
+    }));
+
+    item.appendChild(span);
   },
 
   buildLink: function(options) {
