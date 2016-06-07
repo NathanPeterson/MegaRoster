@@ -1,13 +1,16 @@
 $(document).foundation()
 
 var megaRoster = {
+  students: [],
+  max: 0,
+
+
   init: function(listSelector) {
     this.setupList(listSelector);
     this.setupTemplates();
     this.setupEventListeners();
-    this.students = [];
     this.load();
-    this.max=0;
+
   },
 
   load: function(){
@@ -60,9 +63,9 @@ var megaRoster = {
     f.studentName.focus();
   },
 
-  addStudent: function(student, addToEnd){
+  addStudent: function(student, append){
     var listItem = this.buildListItem(student);
-    if (addToEnd) {
+    if (append) {
       this.students.push(student);
       this.studentList.appendChild(listItem);
     }
@@ -70,9 +73,16 @@ var megaRoster = {
       this.students.unshift(student);
       this.prependChild(this.studentList, listItem);
     }
-    this.max++;
+    this.incrementCounter(student.id);
     this.save();
   },
+
+  incrementCounter: function(id) {
+    if (id > this.max) {
+      this.max = id;
+    }
+  },
+
 
   prependChild: function(parent, child) {
     parent.insertBefore(child, parent.firstChild)
@@ -168,9 +178,10 @@ var megaRoster = {
     if (ev) { ev.preventDefault(); }
     var student = this.findStudentFromItem(listItem);
     var oldIndex = this.students.indexOf(student);
-    this.students.splice(oldIndex - 1, 0, this.students.splice(oldIndex, 1)[0]);
+    var previousItem;
     if (listItem !== this.studentList.firstElementChild) {
-      var previousItem = listItem.previousElementSibling;
+      this.students.splice(oldIndex - 1, 0, this.students.splice(oldIndex, 1)[0]);
+      previousItem = listItem.previousElementSibling;
       this.studentList.insertBefore(listItem, previousItem);
     }
     this.save();
