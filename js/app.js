@@ -6,8 +6,34 @@ var megaRoster = {
     this.setupTemplates();
     this.setupEventListeners();
     this.students = [];
+    this.load();
     this.max=0;
   },
+
+  load: function(){
+
+    try{
+      var storedRoster = localStorage.getItem('roster');
+      if(storedRoster){
+        JSON.parse(storedRoster).map(function(student){
+          this.addStudent(student,true);
+        }.bind(this));
+      }
+    }
+    catch(err){
+      return false;
+    }
+  },
+
+  save: function(){
+    try{
+      localStorage.setItem('roster', JSON.stringify(this.students));
+    }
+    catch(err){
+      return false;
+    }
+  },
+
 
   setupList: function(selector) {
     this.studentList = document.querySelector(selector);
@@ -20,24 +46,32 @@ var megaRoster = {
   },
 
   setupEventListeners: function() {
-    document.querySelector('form#student_form').onsubmit = this.addStudent.bind(this);
+    document.querySelector('form#student_form').onsubmit = this.addStudentViaForm.bind(this);
   },
 
-  addStudent: function(ev) {
+  addStudentViaForm: function(ev) {
     ev.preventDefault();
     var f = ev.currentTarget;
-    var student = {
+    this.addStudent({
       id: (this.max + 1),
       name:  f.studentName.value
-    };
-    var listItem = this.buildListItem(student);
-    this.students.unshift(student);
-    this.prependChild(this.studentList, listItem);
-    this.max++;
+    });
     f.reset();
-    this.count += 1;
-
     f.studentName.focus();
+  },
+
+  addStudent: function(student, addToEnd){
+    var listItem = this.buildListItem(student);
+    if (addToEnd) {
+      this.students.push(student);
+      this.studentList.appendChild(listItem);
+    }
+    else {
+      this.students.unshift(student);
+      this.prependChild(this.studentList, listItem);
+    }
+    this.max++;
+    this.save();
   },
 
   prependChild: function(parent, child) {
@@ -48,6 +82,9 @@ var megaRoster = {
     var listItem = this.studentItemTemplate.cloneNode(true);
     listItem.querySelector('.student-name').innerText = student.name;
     listItem.setAttribute('data-id', student.id);
+    if(student.promoted) {
+      this.promote(listItem);
+    }
     this.removeClassName(listItem, 'hide');
     this.activateLinks(listItem);
 
@@ -82,6 +119,7 @@ var megaRoster = {
       return student.id != id;
     });
     listItem.remove();
+    this.save();
   },
 
   saveStudent: function(listItem, ev) {
@@ -91,6 +129,7 @@ var megaRoster = {
     this.findStudentFromItem(listItem).name = studentName;
     this.toggleEditable(listItem);
     listItem.querySelector('.editable').innerText = studentName;
+    this.save();
   },
 
 
@@ -117,7 +156,12 @@ var megaRoster = {
   promote: function(listItem, ev) {
     if (ev) { ev.preventDefault(); }
     this.prependChild(this.studentList, listItem);
+    var student = this.findStudentFromItem(listItem);
+    if (student) {
+      student.promoted = !student.promoted;
+    };
     this.toggleClassName(listItem, 'promoted');
+    this.save();
   },
 
   moveUp: function(listItem, ev) {
@@ -129,6 +173,7 @@ var megaRoster = {
       var previousItem = listItem.previousElementSibling;
       this.studentList.insertBefore(listItem, previousItem);
     }
+    this.save();
   },
 
   moveDown: function(listItem, ev) {
@@ -136,6 +181,7 @@ var megaRoster = {
     if (listItem !== this.studentList.lastElementChild) {
       this.moveUp(listItem.nextElementSibling);
     }
+    this.save();
   },
 
 
