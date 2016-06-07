@@ -24,25 +24,50 @@ h2 {
   font-size: 200%;
 }
 
-#student_list > li:first-child a.move-up,
- #student_list > li:last-child a.move-down {
+.actions {
+    float: right;
+    transition: 0.3s;
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.student{
+  border: 1px solid #ddd;
+  height: 4rem;
+  padding: .75rem, 1.25rem
+  margin-bottom: -1px;
+  transition: 0.15s;
+}
+
+.student:first-child a.move-up,
+.student:last-child a.move-down{
   background-color: #ddd;
   color: #eee;
   cursor: not-allowed;
-  pointer-events: none;
+  /*pointer-events: none;*/
+}
+
+.student.promoted {
+  background-color: #FFC656;
+  border-color: #FFA807;
  }
+
+.student:hover .actions{
+  opacity: 1;
+}
+
+.student .input-group{
+  margin-bottom: 0;
+}
+
 
  span.student-name {
-   display: inline-block;
+   line-height: 38px;
    padding: 1px;
-   width: 15em;
  }
 
- span[contenteditable=true] {
+.student input[name=studentName] {
    border: 1px solid #ccc;
+   line-height:
    padding: 0;
  }
-
- .actions {
-    float: right;
-  }

@@ -14,14 +14,14 @@
       <div class="medium-offset-2 medium-8 columns">
         <h2>MegaRoster</h2>
         <form id="student_form">
-          <div class="small-9 columns">
+          <div class="input-group">
             <input type="text"
                    name="studentName"
                    placeholder="Enter student name"
                    required>
           </div>
-          <div class="small-3 columns">
-            <button type="submit" class="button expanded">Add Student</button>
+          <div class="input-group-button">
+            <button type="submit" class="success button expanded">Add Student</button>
           </div>
         </form>
       </div>
@@ -30,8 +30,8 @@
     <div class="row">
       <div class="medium-8 medium-offset-2 columns">
         <ul class="no-bullet" id="student_list">
-          <li class="template hide clearfix">
-            <span class="student-name"></span>
+          <li class="student template hide clearfix">
+            <span class="student-name editeable"></span>
             <span class="actions expanded button-group">
               <a href="#" class="edit button"><i class="fa fa-pencil"></i></a>
               <a href="#" class="promote warning button"><i class="fa fa-star"></i></a>
@@ -39,10 +39,20 @@
               <a href="#" class="move-down button"><i class="fa fa-arrow-down"></i></a>
               <a href="#" class="remove alert button"><i class="fa fa-trash-o"></i></a>
             </span>
+            <form class="edit-form hide">
+              <div class="input-group">
+                <input type="text" name="studentName" class="input-group-field">
+                <div class="input-group-button">
+                  <button type="submit" class="success button"><i class="fa fa-check"></i></button>
+                  <button type="button" class="alert cancel button"><i class="fa fa-times"></i></button>
+                </div>
+              </div>
+            </form>
           </li>
          </ul>
       </div>
     </div>
+
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/vendor/what-input.js"></script>
