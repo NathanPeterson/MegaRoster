@@ -19,7 +19,6 @@ var megaRoster = {
 
     // studentList.appendChild(listItem);
     this.prependChild(this.studentList, listItem);
-
     f.reset();
     this.count += 1;
 
@@ -33,6 +32,7 @@ var megaRoster = {
   buildListItem: function(studentName) {
     var listItem = document.createElement('li');
     var span = document.createElement('span');
+    listItem.className += 'clearfix'
     span.innerText = studentName;
     span.className = 'studentName';
     listItem.appendChild(span);

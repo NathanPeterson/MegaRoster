@@ -24,9 +24,10 @@ h2 {
   font-size: 200%;
 }
 
-#studentList li:first-child a.moveUp,
- #studentList li:last-child a.moveDown {
-  color: #ddd;
+#studentList > li:first-child a.moveUp,
+ #studentList > li:last-child a.moveDown {
+  background-color: #ddd;
+  color: #eee;
   cursor: not-allowed;
   pointer-events: none;
  }
@@ -42,7 +43,6 @@ h2 {
    padding: 0;
  }
 
- span.actions {
-   display: inline-block;
-   float: right;
- }
+ .actions {
+    float: right;
+  }
