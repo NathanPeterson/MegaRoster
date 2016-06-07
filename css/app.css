@@ -1,73 +1,48 @@
 #studentForm > div {
-    margin: 0;
-    padding: 0;
+  padding: 0;
 }
 
-#studentList a{
-  margin-left: 20px;
-  border: 3px;
-  border-color: red;
+#studentList a {
+  margin-left: 1em;
 }
 
-span.action{
-  display: inline-block;
-  float: right;
+
+
+h2 {
+  width: 50%;
+  align-content: center;
+  background-color: black;
+  text-align: center;
+  margin-top: 50%;
+  margin-left: 25%;
+  margin-bottom: 75px;
+  color: white;
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+  border-radius: 50%;
+  font-size: 200%;
 }
 
-span.studentName{
-  display: inline-block;
-  width: 15em;
-  padding: 3px;
-}
+#studentList li:first-child a.moveUp,
+ #studentList li:last-child a.moveDown {
+  color: #ddd;
+  cursor: not-allowed;
+  pointer-events: none;
+ }
 
-span[contenteditable = true]{
-  border: 3px solid #999;
-  padding: 0px;
-}
+ span.studentName {
+   display: inline-block;
+   padding: 1px;
+   width: 15em;
+ }
 
-section > div {
-  width: 80%;
-  margin: 20px auto;
-}
+ span[contenteditable=true] {
+   border: 1px solid #ccc;
+   padding: 0;
+ }
 
-form {
-  margin-top: 50px;
-}
-
-dl {
-  padding: 15px 10px;
-}
-
-dl > li{
-  list-style: none;
-}
-
-dt, dd {
-  display: inline-block;
-  vertical-align: top;
-  width: 48%;
-}
-
-dl:nth-of-type(even) {
-  background-color: WhiteSmoke;
-}
-
-@media (min-width: 700px) {
-  section > div {
-    width: 60%;
-  }
-}
-
-@media (min-width: 900px) {
-  section > div {
-    float: left;
-    margin: 20px 5%;
-    width: 40%;
-  }
-
-  section::after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-}
+ span.actions {
+   display: inline-block;
+   float: right;
+ }

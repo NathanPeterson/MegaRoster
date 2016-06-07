@@ -1,125 +1,130 @@
 $(document).foundation()
 
 var megaRoster = {
-  init: function(rosterElementSelector) {
-    this.rosterElement = document.querySelector(rosterElementSelector);
+  init: function(listSelector) {
+    this.studentList = document.querySelector(listSelector);
     this.setupEventListeners();
+    this.count = 0;
   },
 
   setupEventListeners: function() {
-    document.querySelector('#studentForm').onsubmit = this.addStudent.bind(this);
+    document.querySelector('form#studentForm').onsubmit = this.addStudent.bind(this);
   },
 
   addStudent: function(ev) {
     ev.preventDefault();
     var f = ev.currentTarget;
     var studentName = f.studentName.value;
-    var item = this.buildListItem(studentName);
-    this.prependChild(this.rosterElement, item);
+    var listItem = this.buildListItem(studentName);
+
+    // studentList.appendChild(listItem);
+    this.prependChild(this.studentList, listItem);
+
     f.reset();
+    this.count += 1;
+
     f.studentName.focus();
   },
 
   prependChild: function(parent, child) {
-    parent.insertBefore(child, parent.firstChild);
+    parent.insertBefore(child, parent.firstChild)
   },
 
   buildListItem: function(studentName) {
-    var item = document.createElement('li');
+    var listItem = document.createElement('li');
     var span = document.createElement('span');
     span.innerText = studentName;
     span.className = 'studentName';
-    item.appendChild(span);
-    this.appendLinks(item);
+    listItem.appendChild(span);
+    this.appendLinks(listItem);
 
-    return item;
+    return listItem;
   },
 
-  promote: function(item) {
-    this.prependChild(this.rosterElement, item);
-  },
-
-  moveUp: function(item) {
-    var previousElement = item.previousElementSibling;
-    this.rosterElement.insertBefore(item, previousElement);
-  },
-
-  moveDown: function(item) {
-    this.moveUp(item.nextElementSibling);
-  },
-
-  toggleEditable: function(el) {
-    var toggleElement = el.parentElement.querySelector('.toggleEdit');
-    if (el.contentEditable === "true") {
-        el.contentEditable = "false";
-        toggleElement.innerHTML = "edit";
-    } else {
-        el.contentEditable = "true";
-        toggleElement.innerHTML = "update";
-        el.focus();
-    }
-  },
-
-  appendLinks: function(item) {
+  appendLinks: function(listItem) {
     var span = document.createElement('span');
-    span.className = 'actions';
-
-    var deleteLink = this.buildLink({
-      text: 'remove',
-      handler: function(ev) {
-        this.rosterElement.removeChild(item);
+    span.className += 'actions'
+    var removeLink = this.buildLink({
+      contents: '<i class="fa fa-trash"></i>',
+      className: 'alert button',
+      handler: function() {
+        listItem.remove();
       }
     });
-
     var promoteLink = this.buildLink({
-      text: 'promote',
+      contents: '<i class="fa fa-star"></i>',
+      className: 'button',
       handler: function() {
-        this.promote(item);
-      }
+        this.promote(listItem);
+      }.bind(this)
     });
-
-    span.appendChild(deleteLink);
+    var moveUpLink = this.buildLink({
+      contents: '<i class="fa fa-arrow-up"></i>',
+      className: 'moveUp',
+      className: 'button',
+      handler: function() {
+        this.moveUp(listItem);
+      }.bind(this)
+    });
+    var moveDownLink = this.buildLink({
+      contents: '<i class="fa fa-arrow-down"></i>',
+      className: 'moveDown',
+      className: 'button',
+      handler: function() {
+        this.moveDown(listItem);
+      }.bind(this)
+    });
+    span.appendChild(this.buildLink({
+      contents: 'edit',
+      className: 'edit',
+      handler: function() {
+        this.toggleEditable(listItem.querySelector('span.studentName'));
+      }.bind(this)
+    }));
+    span.appendChild(removeLink);
     span.appendChild(promoteLink);
-
-    span.appendChild(this.buildLink({
-      text: 'up',
-      className: 'up',
-      handler: function() {
-        if (item !== this.rosterElement.firstElementChild) {
-          this.moveUp(item);
-        }
-      }
-    }));
-
-    span.appendChild(this.buildLink({
-      text: 'down',
-      className: 'down',
-      handler: function() {
-        if (item !== this.rosterElement.lastElementChild) {
-          this.moveDown(item);
-        }
-      }
-    }));
-
-    span.appendChild(this.buildLink({
-      text: 'edit',
-      className: 'toggleEdit',
-      handler: function() {
-        this.toggleEditable(item.querySelector('span.studentName'));
-      }
-    }));
-
-    item.appendChild(span);
+    span.appendChild(moveUpLink);
+    span.appendChild(moveDownLink);
+    listItem.appendChild(span);
   },
 
   buildLink: function(options) {
     var link = document.createElement('a');
-    link.href = '#';
-    link.innerText = options.text;
-    link.onclick = options.handler.bind(this);
-    link.className = options.className;
+    link.href = "#";
+    link.innerHTML = options.contents;
+    link.onclick = options.handler;
+    link.className += (options.className || '');
     return link;
   },
-}
 
+  toggleEditable: function(el) {
+    var toggleElement = el.parentElement.querySelector('a.edit');
+    if (el.contentEditable === 'true') {
+      el.contentEditable = 'false';
+      toggleElement.innerHTML = 'edit';
+    }
+    else {
+      el.contentEditable = 'true';
+      el.focus();
+      toggleElement.innerHTML = 'save';
+    }
+  },
+
+  promote: function(listItem) {
+    this.prependChild(this.studentList, listItem);
+  },
+
+  moveUp: function(listItem) {
+    if (listItem !== this.studentList.firstElementChild) {
+      var previousItem = listItem.previousElementSibling;
+      this.studentList.insertBefore(listItem, previousItem);
+    }
+  },
+
+  moveDown: function(listItem) {
+    if (listItem !== this.studentList.lastElementChild) {
+      this.moveUp(listItem.nextElementSibling);
+    }
+  },
+};
 megaRoster.init('#studentList');
